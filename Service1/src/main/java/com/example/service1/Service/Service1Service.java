@@ -1,21 +1,29 @@
 package com.example.service1.Service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class Service1Service {
 
-    public String findName(String id) {
-        switch (id) {
-            case "1":
-                return "서비스1 처음";
-            case "2":
-                return "서비스2 중간";
-            default:
-                return "서비스3 마지막";
-        }
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
+    public List getServices(){
+        List<String> services = new ArrayList<String>();
+
+        /** 람다스트림 표현 */
+        discoveryClient.getServices().forEach(serviceName -> {
+            discoveryClient.getInstances(serviceName).forEach(instance->{
+                services.add( String.format("%s:%s",serviceName,instance.getUri()));
+            });
+        });
+        return services;
     }
 }
