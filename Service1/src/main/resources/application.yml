@@ -16,7 +16,7 @@ eureka:
     fetch-registry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-    registry-fetch-interval-seconds: 5
+    registry-fetch-interval-seconds: 60
     disable-delta: true
 
 management:
